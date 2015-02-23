@@ -1,0 +1,14 @@
+{
+  "name": "nine-track-sslcerts",
+  "version": "1.0.0",
+  "description": "testing ssl self cert server",
+  "main": "certsite.js",
+  "dependencies": {
+    "request": "^2.53.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
