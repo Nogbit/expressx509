@@ -60,6 +60,7 @@ var goGetIt = function makeRequest() {
 
   console.log('starting server on https://localhost:4433');
 
+  // server
   var options = {
     key: fs.readFileSync('output/server-key.pem'),
     cert: fs.readFileSync('output/server-crt.pem'),
@@ -77,27 +78,41 @@ var goGetIt = function makeRequest() {
     res.end("hello world\n");
   }).listen(4433);
 
-
-  //now make a request to the server
+  // client
   var reqOptions = {
-    hostname: 'localhost',
-    port: 4433,
-    path: '/',
-    method: 'GET',
-    key: fs.readFileSync('output/client-key.pem'),
-    cert: fs.readFileSync('output/client-crt.pem'),
-    ca: fs.readFileSync('output/ca-crt.pem')
+      url: 'https://localhost:4433',
+      agentOptions: {
+          cert: fs.readFileSync('output/client-crt.pem'),
+          key: fs.readFileSync('output/client-key.pem')
+      }
   };
-
-  var req = https.request(reqOptions, function(res) {
-    res.on('data', function(data) {
-      process.stdout.write(data);
-     });
+  request.get(reqOptions, function(error, response, body) {
+    console.log(body);
   });
 
-  req.end();
 
-  req.on('error', function(e) {
-    console.error(e);
-  });
+  // Use node https.request vs. request module
+  //   This works as well
+  //
+  // var reqOptions = {
+  //   hostname: 'localhost',
+  //   port: 4433,
+  //   path: '/',
+  //   method: 'GET',
+  //   key: fs.readFileSync('output/client-key.pem'),
+  //   cert: fs.readFileSync('output/client-crt.pem')
+  // };
+
+  // var req = https.request(reqOptions, function(res) {
+  //   res.on('data', function(data) {
+  //     process.stdout.write(data);
+  //    });
+  // });
+
+  // req.end();
+
+  // req.on('error', function(e) {
+  //   console.error(e);
+  // });
+
 };
